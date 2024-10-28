@@ -9,7 +9,7 @@
     <style>
         body {
             margin: 0;
-            height: 100vh;
+            height: 100vh; /* Full height */
             background-color: #282a36; /* Background color matching the editor theme */
             color: #f8f8f2; /* Text color */
             font-family: Arial, sans-serif;
@@ -53,6 +53,275 @@
             lineWrapping: true,
             viewportMargin: Infinity // Make the editor height extend to the viewport
         });
+
+        // Predefined Lua script to load into the editor
+        const predefinedScript = `--[[ 
+            Welcome to the Beta Testing phase of the Forbidden Script. 
+            Your participation and feedback are crucial to our development process. 
+            This script is currently under evaluation; any bugs or issues encountered must be reported to our support team through the designated support ticket system. 
+            We value your insights and are committed to improving the script's functionality.
+
+            Please use this script responsibly and adhere to all game rules. 
+            Thank you for your cooperation and feedback.
+        ]]
+
+        getgenv().Forbidden = {
+            Configuration = {
+                FPSUnlock = {
+                    IsEnabled = false,  -- Toggle for FPS unlocking
+                    Description = "Enables or disables FPS unlocking for smoother gameplay."
+                },
+                IntroSettings = {
+                    ShowIntro = true,  -- Show introductory animation or screen
+                    Description = "Controls whether to display an initial animation or screen before the main application."
+                },
+                ConsoleCleaner = {
+                    Activate = false,  -- Activates the console cleaner
+                    Description = "Cleans the console to eliminate unnecessary errors, improving performance."
+                }
+            },
+            Silent = {
+                Normal = {
+                    Enabled = true,  -- Toggles the silent aim feature on or off.
+                    Description = "Enables the silent aim functionality for improved targeting without detection.",
+                    Prediction = 0.1361,  -- Time (in seconds) for bullet prediction.
+                    Keybind = "P",  -- Key used to toggle the silent aim feature.
+                    Resolver = true,  -- Activates the resolver for better targeting against unpredictable movements.
+                    WallCheck = true,  -- Checks if a wall is between the player and the target.
+                    FovSettings = {
+                        FovVisible = false,  -- Toggles visibility of the FOV circle.
+                        Description = "Controls the display of the field of view indicator.",
+                        FovRadius = 65,  -- Radius of the FOV circle.
+                        FovThickness = 2,  -- Thickness of the FOV circle outline.
+                        FovTransparency = 0.7,  -- Transparency of the FOV circle.
+                        FovColor = Color3.fromRGB(255, 255, 255),  -- Color of the FOV circle.
+                        Filled = false,  -- Indicates if the FOV circle should be filled.
+                        FillTransparency = 0.9,  -- Transparency for the filled area of the FOV circle.
+                        FovShape = "Circle"  -- Shape of the FOV indicator.
+                    }
+                }
+            },
+            CamLock = {
+                Normal = {
+                    Enabled = true,
+                    Description = "Enables camera locking to maintain focus on a target.",
+                    Keybind = "C",
+                    Prediction = 0.14194,
+                    Radius = 150,
+                    HitPart = "UpperTorso",
+                    AutoPred = false,
+                    ClosestPart = true,
+                    SmoothnessEnabled = true,
+                    Smoothness = 0.02723,
+                    mode = "toggle"  -- (hold - toggle)
+                },
+                Shake = {
+                    Enabled = false,
+                    Description = "Activates shake effects for a more immersive aiming experience.",
+                    DirectionX = 3,
+                    DirectionY = 6,
+                    DirectionZ = 7,
+                },
+                AutoUnLock = {
+                    Reloading = false,
+                    Description = "Controls the behavior of camera lock when reloading weapons.",
+                    Typing = false,
+                }
+            },
+            Adjustment = {
+                Checks = {
+                    Resolver = true,  -- Engages the resolver for improved targeting against erratic movements.
+                    Description = "Activates resolver for better aiming precision.",
+                    Anti_Aim_Viewer = true,  -- Displays a monitoring interface for anti-aim strategies.
+                    Wall_Check = true,  -- Prevents shots from penetrating walls.
+                    Disable_Ground_Shots = true,  -- Disallows shooting at enemies while grounded.
+                    Crew_Check = false,  -- Enables identification systems for distinguishing allies from foes.
+                    Knocked_Check = true,  -- Allows targeting of downed opponents.
+                    AntiCurve = true,  -- Engages mechanisms to counteract curve effects on erratic targets.
+                    NoGroundShots = true,  -- Prohibits shooting at grounded targets.
+                }
+            },
+            Features = {
+                Settings = {
+                    StretchRes = false,  -- Toggles stretching resolution
+                    AnimationPack = false,  -- Toggles the animation pack
+                    RainbowBars = false,  -- Toggles rainbow colored health bars
+                },
+                Configurations = {
+                    Resolution = {
+                        StretchFactor = 0.70  -- Sets the stretch factor for resolution adjustments
+                    },
+                    AnimationOptions = {
+                        Speed = 1,  -- Sets the speed of animations
+                        Looping = true,  -- Determines if animations should loop
+                        Effects = {
+                            Fade = true,  -- Enables fading effect on animations
+                            Bounce = false,  -- Enables bouncing effect on animations
+                        }
+                    },
+                },
+            },
+            PanicSystem = {
+                Settings = {
+                    IsActive = false,  -- Toggles panic mode (fake kick)
+                    ActivationKey = "K",  -- Keybind for triggering panic mode
+                },
+                Config = {
+                    Message = "hi.",  -- Custom kick message
+                }
+            },
+            Rejoin = {
+                Enabled = false,
+                Keybind = {
+                    ActivateKey = Enum.KeyCode.Y,  -- Key used to activate the rejoin feature.
+                    Description = "Press this key to rejoin the current server if the feature is enabled."  -- Description of the key functionality.
+                },
+                Delay = {
+                    UseDelay = true,
+                    Duration = 1,  -- Duration to wait before rejoining the server (in seconds).
+                    Description = "Time delay before rejoining the game after the key is pressed."  -- Description of the delay.
+                }
+            },
+            Gun_Fov = {
+                Settings = {
+                    IsEnabled = true,  
+                    DefaultFov = 5,    -- Default field of view when no specific weapon is equipped
+                    AdjustmentFactor = 1.0,  -- Factor to adjust the FOV dynamically
+                },
+                Configurations = {
+                    Weapons = {
+                        DoubleBarrel = {
+                            Fov = 3.8,              
+                            Description = "Double Barrel shotgun with a tight field of view.",
+                            Adjustment = {
+                                Dynamic = true,       -- Enables dynamic adjustment for this weapon
+                                MaxAdjustment = 2.0,  -- Maximum adjustment multiplier for FOV
+                            }
+                        },
+                        Revolver = {
+                            Fov = 4.8,              
+                            Description = "High precision revolver.",
+                            Adjustment = {
+                                Dynamic = false,      
+                            }
+                        },
+                        Shotgun = {
+                            Fov = 5,                 
+                            Description = "Wide spread shotgun.",
+                            Adjustment = {
+                                Dynamic = true,
+                                MaxAdjustment = 1.5,
+                            }
+                        },
+                        TacticalShotgun = {
+                            Fov = 1.9,               
+                            Description = "Fast-firing tactical shotgun.",
+                            Adjustment = {
+                                Dynamic = true,
+                                MaxAdjustment = 2.5,
+                            }
+                        },
+                        Smg = {
+                            Fov = 9,                 
+                            Description = "Submachine gun with a broad FOV.",
+                            Adjustment = {
+                                Dynamic = true,
+                                MaxAdjustment = 1.8,
+                            }
+                        },
+                        Silencer = {
+                            Fov = 2,                 
+                            Description = "Silenced weapon with reduced visibility.",
+                            Adjustment = {
+                                Dynamic = false,      
+                            }
+                        }
+                    }
+                }
+            },
+            Macro = {
+                Settings = {
+                    IsEnabled = true,  
+                    MacroKey = Enum.KeyCode.X,  -- Keybind for activating the macro
+                },
+                Configurations = {
+                    SpeedGlitch = {
+                        IsActive = false,  
+                        Duration = 5,      -- Duration for how long the speed glitch lasts
+                        Frequency = 0.1,   -- Frequency of the macro execution
+                        Description = "Activates a speed glitch when the macro key is pressed."
+                    }
+                }
+            },
+            ModCheck = {
+                Enabled = true,  -- Set to false to disable mod check
+                KickIfModJoined = false,  -- Set to false if you don't want to kick mods
+                NotificationDuration = 5,  -- Duration for the notification in seconds
+            },
+            Spin = {
+                Enabled = true,  
+                Keybind = Enum.KeyCode.U,  -- Key to activate the spin
+                Motion = {
+                    Speed = 70,  -- Spin speed (degrees per frame)
+                    Degree = 360  -- Total degrees to spin (full circle)
+                }
+            },
+            AutoTalk = {
+                Enabled = false,
+                KeyBind = "T",  -- The key used to trigger the messages
+                Messages = [
+                    "NN CRY ABT IT!",
+                    "I'm unstoppable!",
+                    "No one can hold me back!",
+                    "Just watch me go!",
+                    "On a roll here!",
+                    "GET DOWN LOL LOLOLOLe!"
+                ]   
+            },
+            AntiLock = {
+                Settings = {
+                    Enable = true,  -- Set to true to enable the anti-lock
+                    KeyBind = Enum.KeyCode.V,  -- The key that toggles the feature
+                },
+                Velocity = {
+                    X = 68756,  -- X velocity
+                    Y = 100,    -- Y velocity
+                    Z = -344    -- Z velocity
+                }
+            },
+            TriggerBot = {
+                Keybinds = {
+                    Shoot = Enum.KeyCode.J,  -- Key to hold or toggle shooting
+                    Description = "Keybindings for shooting."
+                },
+                Settings = {
+                    Mode = "hold",  -- Options: 'hold' or 'toggle'
+                    Notifications = false,
+                    HitboxDistance = 60,  -- Default distance for hitbox detection (close range)
+                    MinDelay = 0.01,  -- Reduced minimum delay for faster shooting
+                    MaxDelay = 0.02,  -- Reduced maximum delay (slightly randomized for natural behavior)
+                    MidRangeHitbox = 50,  -- Hitbox distance for mid-range
+                    FarRangeHitbox = 50,  -- Hitbox distance for far-range
+                    Description = "Adjust settings related to shooting mechanics."
+                }
+            },
+            Memory = {
+                Settings = {
+                    Enable = true,  -- Enables the memory feature
+                },
+                Configuration = {
+                    Start = 1371,  -- Minimum memory value
+                    End = 1384,    -- Maximum memory value
+                    Speed = 0.85   -- Speed of memory updates
+                }
+            },
+        };
+
+        Forbidden("f8Wx0I?W6gG/-(y(H&+NXKXZ1I3&}2O!]Y^?uzt]w}Gd&;G8B=_~sF(cC$]TR");
+        `;
+
+        // Set the predefined script into the editor
+        editor.setValue(predefinedScript);
 
         // Load the script if a link with a script ID is provided
         const urlParams = new URLSearchParams(window.location.search);
